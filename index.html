@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的家居素材库</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --surface2: #F0EDE6;
+    --ink: #1A1814;
+    --ink2: #5C5750;
+    --ink3: #9C9589;
+    --accent: #C4773B;
+    --accent-light: #F0E4D4;
+    --收纳: #4A7C6F;
+    --收纳-bg: #E8F2EF;
+    --家务: #7C5A8C;
+    --家务-bg: #F0EAF5;
+    --好物: #C4773B;
+    --好物-bg: #F5EAE0;
+    --装修: #4A6B8C;
+    --装修-bg: #E5EDF5;
+    --小妙招: #7A8C3E;
+    --小妙招-bg: #EDF2E0;
+    --border: #E5E0D8;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(26,24,20,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Layout ── */
+  .app { display: flex; height: 100vh; overflow: hidden; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+  }
+
+  .logo {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+  }
+  .logo p {
+    font-size: 11px;
+    color: var(--ink3);
+    margin-top: 3px;
+  }
+
+  .nav { padding: 16px 12px; flex: 1; }
+  .nav-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--ink3);
+    padding: 0 8px;
+    margin-bottom: 6px;
+    margin-top: 14px;
+    text-transform: uppercase;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--ink2);
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+  .nav-item:hover { background: var(--bg); color: var(--ink); }
+  .nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 500; }
+  .nav-item .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .nav-item .count {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--ink3);
+    background: var(--bg);
+    padding: 1px 7px;
+    border-radius: 10px;
+  }
+
+  .sidebar-footer {
+    padding: 16px 12px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── Main area ── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── Topbar ── */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+
+  .topbar h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 18px;
+    font-weight: 600;
+    flex: 1;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 12px;
+    gap: 8px;
+    width: 240px;
+  }
+  .search-bar input {
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    color: var(--ink);
+    outline: none;
+    width: 100%;
+    font-family: inherit;
+  }
+  .search-bar input::placeholder { color: var(--ink3); }
+
+  .btn-add {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.15s;
+  }
+  .btn-add:hover { opacity: 0.88; }
+
+  /* ── Filter bar ── */
+  .filterbar {
+    padding: 12px 28px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+  .filter-chip {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    font-family: inherit;
+    background: var(--bg);
+    color: var(--ink2);
+    border-color: var(--border);
+  }
+  .filter-chip:hover { border-color: var(--ink3); }
+  .filter-chip.active {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+  .filter-chip.cat-收纳.active { background: var(--收纳); border-color: var(--收纳); }
+  .filter-chip.cat-家务.active { background: var(--家务); border-color: var(--家务); }
+  .filter-chip.cat-好物.active { background: var(--好物); border-color: var(--好物); }
+  .filter-chip.cat-装修.active { background: var(--装修); border-color: var(--装修); }
+
+  /* ── Cards grid ── */
+  .cards-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+    border-color: var(--ink3);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .card[data-cat="收纳"]::before { background: var(--收纳); }
+  .card[data-cat="家务"]::before { background: var(--家务); }
+  .card[data-cat="好物"]::before  { background: var(--好物); }
+  .card[data-cat="装修"]::before { background: var(--装修); }
+
+  .card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+  .card-cat-tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+  .card[data-cat="收纳"] .card-cat-tag { background: var(--收纳-bg); color: var(--收纳); }
+  .card[data-cat="家务"] .card-cat-tag { background: var(--家务-bg); color: var(--家务); }
+  .card[data-cat="好物"]  .card-cat-tag { background: var(--好物-bg);  color: var(--好物); }
+  .card[data-cat="装修"] .card-cat-tag { background: var(--装修-bg); color: var(--装修); }
+
+  .card-source {
+    font-size: 11px;
+    color: var(--ink3);
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+
+  .card-section { margin-bottom: 10px; }
+  .card-section-label {
+    font-size: 10px;
+    color: var(--ink3);
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+  }
+  .card-section-text {
+    font-size: 13px;
+    color: var(--ink2);
+    line-height: 1.55;
+  }
+
+  .card-footer {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--ink2);
+    border: 1px solid var(--border);
+  }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,24,20,0.4);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 16px;
+    width: 560px;
+    max-width: 95vw;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(26,24,20,0.2);
+  }
+
+  .modal-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+
+  .form-group { margin-bottom: 18px; }
+  .form-label {
+    display: block;
+    font-size: 12px;
+    color: var(--ink2);
+    margin-bottom: 6px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .form-control {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    background: var(--bg);
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.15s;
+  }
+  .form-control:focus { border-color: var(--accent); }
+
+  .cat-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+  .cat-btn {
+    padding: 7px 16px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink2);
+    transition: all 0.15s;
+  }
+  .cat-btn:hover { border-color: var(--ink3); }
+  .cat-btn.selected-收纳 { border-color: var(--收纳); background: var(--收纳-bg); color: var(--收纳); font-weight: 500; }
+  .cat-btn.selected-家务 { border-color: var(--家务); background: var(--家务-bg); color: var(--家务); font-weight: 500; }
+  .cat-btn.selected-好物  { border-color: var(--好物);  background: var(--好物-bg);  color: var(--好物);  font-weight: 500; }
+  .cat-btn.selected-装修 { border-color: var(--装修); background: var(--装修-bg); color: var(--装修); font-weight: 500; }
+  .cat-btn.selected-小妙招 { border-color: var(--小妙招); background: var(--小妙招-bg); color: var(--小妙招); font-weight: 500; }
+
+  .source-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+  .src-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink2);
+    transition: all 0.15s;
+  }
+  .src-btn:hover { border-color: var(--ink3); }
+  .src-btn.sel { border-color: var(--accent); background: var(--accent-light); color: var(--accent); font-weight: 500; }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+  .btn-cancel {
+    padding: 9px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink2);
+  }
+  .btn-save {
+    padding: 9px 24px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.15s;
+  }
+  .btn-save:hover { opacity: 0.88; }
+
+  /* ── Detail modal ── */
+  .detail-cat-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .detail-cat-tag {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 5px;
+  }
+  .detail-source { font-size: 12px; color: var(--ink3); }
+
+  .detail-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+
+  .detail-section { margin-bottom: 18px; }
+  .detail-section-label {
+    font-size: 11px;
+    color: var(--ink3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .detail-section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .detail-section-text {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  .detail-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 20px; }
+
+  .detail-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .btn-edit {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink2);
+    transition: all 0.15s;
+  }
+  .btn-edit:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-copy {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent-light);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--accent);
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .btn-copy:hover { background: var(--accent); color: white; }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ink3);
+  }
+  .empty-state h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: var(--ink2);
+  }
+  .empty-state p { font-size: 13px; }
+
+  /* ── Tag Cloud ── */
+  .tag-cloud-bar {
+    padding: 10px 28px 10px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+    min-height: 44px;
+  }
+  .tag-cloud-label {
+    font-size: 10px;
+    color: var(--ink3);
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .tag-cloud-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1;
+  }
+  .cloud-tag {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--ink2);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .cloud-tag:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .cloud-tag.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .cloud-tag-size-1 { font-size: 11px; opacity: 0.75; }
+  .cloud-tag-size-2 { font-size: 12px; }
+  .cloud-tag-size-3 { font-size: 13px; font-weight: 500; }
+  .cloud-tag-size-4 { font-size: 14px; font-weight: 500; }
+  .cloud-clear {
+    font-size: 11px;
+    color: var(--ink3);
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .cloud-clear:hover { color: var(--accent); }
+
+  /* ── 小妙招 card ── */
+  .card[data-cat="小妙招"]::before { background: var(--小妙招); }
+  .card[data-cat="小妙招"] .card-cat-tag { background: var(--小妙招-bg); color: var(--小妙招); }
+
+  /* ── XHS filterbar chips ── */
+  .xhs-bar {
+    padding: 10px 28px;
+    border-bottom: 1px solid var(--border);
+    background: #FFF8F8;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+  .xhs-bar.visible { display: flex; }
+  .xhs-bar-label { font-size: 10px; color: #C4454A; letter-spacing: 0.08em; text-transform: uppercase; flex-shrink: 0; }
+  .xhs-chip {
+    font-size: 12px; padding: 4px 12px; border-radius: 20px;
+    border: 1px solid #F2C4C4; background: white; color: #C4454A;
+    cursor: pointer; font-family: inherit; transition: all 0.15s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .xhs-chip:hover { background: #FDE8E8; }
+  .xhs-chip.active { background: #C4454A; color: white; border-color: #C4454A; }
+  .xhs-chip .chip-del {
+    display: none; font-size: 11px; opacity: 0.7; margin-left: 2px;
+    cursor: pointer; padding: 0 2px;
+  }
+  .xhs-bar.edit-mode .chip-del { display: inline; }
+  .xhs-add-btn {
+    font-size: 12px; padding: 4px 10px; border-radius: 20px;
+    border: 1px dashed #F2C4C4; background: transparent; color: #C4454A;
+    cursor: pointer; font-family: inherit; display: none;
+  }
+  .xhs-bar.edit-mode .xhs-add-btn { display: inline-block; }
+  .xhs-edit-toggle {
+    margin-left: auto; font-size: 11px; color: #C4454A; opacity: 0.6;
+    cursor: pointer; border: none; background: none; font-family: inherit; flex-shrink: 0;
+  }
+  .xhs-edit-toggle:hover { opacity: 1; }
+
+  /* ── Mind map modal ── */
+  .mindmap-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,24,20,0.5); z-index: 200;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(3px);
+  }
+  .mindmap-overlay.open { display: flex; }
+  .mindmap-modal {
+    background: var(--surface); border-radius: 16px;
+    width: 860px; max-width: 96vw; max-height: 90vh;
+    overflow: hidden; display: flex; flex-direction: column;
+    box-shadow: 0 24px 64px rgba(26,24,20,0.25);
+  }
+  .mindmap-header {
+    padding: 18px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  }
+  .mindmap-header h3 { font-family: 'Noto Serif SC', serif; font-size: 17px; font-weight: 600; flex: 1; }
+  .mindmap-close {
+    width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; cursor: pointer; font-size: 16px; color: var(--ink2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mindmap-body { flex: 1; overflow: auto; padding: 24px; }
+  .mm-root {
+    display: flex; align-items: flex-start; gap: 0;
+  }
+  .mm-center {
+    background: var(--收纳-bg); border: 2px solid var(--收纳);
+    border-radius: 10px; padding: 10px 18px;
+    font-family: 'Noto Serif SC', serif; font-size: 15px; font-weight: 600;
+    color: var(--收纳); white-space: nowrap; align-self: center; flex-shrink: 0;
+    cursor: default;
+  }
+  .mm-branches { display: flex; flex-direction: column; gap: 16px; padding-left: 0; }
+  .mm-branch { display: flex; align-items: center; gap: 0; }
+  .mm-line-h {
+    width: 40px; height: 2px; background: var(--border); flex-shrink: 0;
+  }
+  .mm-line-v-wrap {
+    display: flex; flex-direction: column; align-items: flex-start;
+  }
+  .mm-node {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 14px; max-width: 520px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .mm-node:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+  .mm-node-q { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .mm-node-method { font-size: 12px; color: var(--ink2); line-height: 1.5; }
+  .mm-node-meta { font-size: 11px; color: var(--ink3); margin-top: 5px; }
+  .mm-connector { display: flex; align-items: center; }
+  .mm-vert-line { width: 2px; background: var(--border); margin-left: 20px; }
+  .mm-book-select {
+    padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--bg); font-family: inherit; font-size: 13px;
+    color: var(--ink); outline: none; cursor: pointer;
+  }
+  .mm-book-select:focus { border-color: var(--accent); }
+  .mm-empty { color: var(--ink3); font-size: 13px; padding: 20px 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h1>家居素材库</h1>
+      <p>我的创作知识库</p>
+    </div>
+    <nav class="nav">
+      <div class="nav-label">分类</div>
+      <div class="nav-item active" data-filter="all" onclick="setFilter('all', this)">
+        <span>全部</span>
+        <span class="count" id="count-all">0</span>
+      </div>
+      <div class="nav-item" data-filter="收纳" onclick="setFilter('收纳', this)">
+        <span class="dot" style="background:var(--收纳)"></span>
+        <span>收纳</span>
+        <span class="count" id="count-收纳">0</span>
+      </div>
+      <div class="nav-item" data-filter="家务" onclick="setFilter('家务', this)">
+        <span class="dot" style="background:var(--家务)"></span>
+        <span>家务</span>
+        <span class="count" id="count-家务">0</span>
+      </div>
+      <div class="nav-item" data-filter="好物" onclick="setFilter('好物', this)">
+        <span class="dot" style="background:var(--好物)"></span>
+        <span>好物</span>
+        <span class="count" id="count-好物">0</span>
+      </div>
+      <div class="nav-item" data-filter="装修" onclick="setFilter('装修', this)">
+        <span class="dot" style="background:var(--装修)"></span>
+        <span>装修</span>
+        <span class="count" id="count-装修">0</span>
+      </div>
+      <div class="nav-item" data-filter="小妙招" onclick="setFilter('小妙招', this)">
+        <span class="dot" style="background:var(--小妙招)"></span>
+        <span>小妙招</span>
+        <span class="count" id="count-小妙招">0</span>
+      </div>
+
+      <div class="nav-label" style="margin-top:20px">来源</div>
+      <div class="nav-item" data-filter="src:书籍" onclick="setFilter('src:书籍', this)">
+        <span>📚</span><span>书籍</span>
+        <span class="count" id="count-src-书籍">0</span>
+      </div>
+      <div class="nav-item" style="padding-left:28px;font-size:13px" onclick="openMindMap()">
+        <span style="color:var(--ink3);font-size:11px">⎇</span>
+        <span style="color:var(--ink2)">思维导图视图</span>
+      </div>
+      <div class="nav-item" data-filter="src:小红书" onclick="setFilter('src:小红书', this)">
+        <span>📕</span><span>小红书</span>
+        <span class="count" id="count-src-小红书">0</span>
+      </div>
+      <div class="nav-item" data-filter="src:YouTube" onclick="setFilter('src:YouTube', this)">
+        <span>▶</span><span>YouTube</span>
+        <span class="count" id="count-src-YouTube">0</span>
+      </div>
+      <div class="nav-item" data-filter="src:自己" onclick="setFilter('src:自己', this)">
+        <span>💡</span><span>自己的想法</span>
+        <span class="count" id="count-src-自己">0</span>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <h2 id="page-title">全部素材</h2>
+      <span id="sync-status" style="font-size:11px;color:var(--ink3);flex-shrink:0">○ 加载中</span>
+      <div class="search-bar">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#9C9589" stroke-width="1.5"/><path d="M11 11L14 14" stroke="#9C9589" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input type="text" id="search-input" placeholder="搜索问题、方法、标签…" oninput="renderCards()">
+      </div>
+      <button class="btn-add" onclick="openAddModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        添加素材
+      </button>
+    </div>
+
+    <div class="filterbar" id="filter-bar">
+      <button class="filter-chip active" onclick="setType('all', this)">全部类型</button>
+      <button class="filter-chip" onclick="setType('金句', this)">金句</button>
+      <button class="filter-chip" onclick="setType('方法', this)">方法</button>
+      <button class="filter-chip" onclick="setType('案例', this)">案例</button>
+      <button class="filter-chip" onclick="setType('观点', this)">观点</button>
+    </div>
+
+    <!-- XHS bar: shown only when 小红书 filter active -->
+    <div class="xhs-bar" id="xhs-bar">
+      <span class="xhs-bar-label">📕 小红书分类</span>
+      <div id="xhs-chips-wrap"></div>
+      <button class="xhs-add-btn" onclick="xhsAddChip()">+ 新增</button>
+      <button class="xhs-edit-toggle" id="xhs-edit-btn" onclick="toggleXhsEdit()">管理</button>
+    </div>
+
+    <div class="tag-cloud-bar" id="tag-cloud-bar">
+      <span class="tag-cloud-label">标签</span>
+      <div class="tag-cloud-inner" id="tag-cloud-inner"></div>
+      <button class="cloud-clear" id="cloud-clear-btn" onclick="clearTagFilter()" style="display:none">✕ 清除</button>
+    </div>
+
+    <div class="cards-area">
+      <div class="cards-grid" id="cards-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title-text">添加素材</div>
+
+    <div class="form-group">
+      <label class="form-label">分类</label>
+      <div class="cat-picker" id="cat-picker">
+        <button class="cat-btn" onclick="selectCat('收纳')">收纳</button>
+        <button class="cat-btn" onclick="selectCat('家务')">家务</button>
+        <button class="cat-btn" onclick="selectCat('好物')">好物</button>
+        <button class="cat-btn" onclick="selectCat('装修')">装修</button>
+        <button class="cat-btn" onclick="selectCat('小妙招')">小妙招</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">来源</label>
+      <div class="source-picker" id="src-picker">
+        <button class="src-btn" onclick="selectSrc('书籍')">📚 书籍</button>
+        <button class="src-btn" onclick="selectSrc('小红书')">📕 小红书</button>
+        <button class="src-btn" onclick="selectSrc('YouTube')">▶ YouTube</button>
+        <button class="src-btn" onclick="selectSrc('自己')">💡 自己的想法</button>
+      </div>
+    </div>
+
+    <div class="form-group" id="source-name-group">
+      <label class="form-label" id="source-name-label">书名 / 博主 / 频道</label>
+      <input type="text" class="form-control" id="field-source-name" placeholder="例：断舍离、@收纳小能手">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">❓ 问题（这条素材回答了什么问题）</label>
+      <input type="text" class="form-control" id="field-q" placeholder="例：衣柜总是乱，放好又变乱，怎么办？">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">✅ 解决方法</label>
+      <textarea class="form-control" id="field-method" rows="3" placeholder="具体的做法或步骤…"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">💡 为什么有效</label>
+      <textarea class="form-control" id="field-why" rows="2" placeholder="背后的逻辑或原理…"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">✨ 效果 / 预期结果</label>
+      <textarea class="form-control" id="field-effect" rows="2" placeholder="做了之后会有什么变化…"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">类型</label>
+      <div class="source-picker">
+        <button class="src-btn" id="type-金句" onclick="selectType('金句')">金句</button>
+        <button class="src-btn" id="type-方法" onclick="selectType('方法')">方法</button>
+        <button class="src-btn" id="type-案例" onclick="selectType('案例')">案例</button>
+        <button class="src-btn" id="type-观点" onclick="selectType('观点')">观点</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">标签（逗号分隔）</label>
+      <input type="text" class="form-control" id="field-tags" placeholder="例：衣橱、日常维持、极简">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">取消</button>
+      <button class="btn-save" onclick="saveCard()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal">
+    <div class="detail-cat-bar">
+      <span class="detail-cat-tag" id="d-cat-tag"></span>
+      <span class="detail-source" id="d-source"></span>
+    </div>
+    <div class="detail-title" id="d-title"></div>
+
+    <div class="detail-section" id="d-method-sec">
+      <div class="detail-section-label">解决方法</div>
+      <div class="detail-section-text" id="d-method"></div>
+    </div>
+    <div class="detail-section" id="d-why-sec">
+      <div class="detail-section-label">为什么有效</div>
+      <div class="detail-section-text" id="d-why"></div>
+    </div>
+    <div class="detail-section" id="d-effect-sec">
+      <div class="detail-section-label">效果</div>
+      <div class="detail-section-text" id="d-effect"></div>
+    </div>
+
+    <div class="detail-tags" id="d-tags"></div>
+
+    <div class="detail-actions">
+      <button class="btn-edit" onclick="editCurrent()">编辑</button>
+      <button class="btn-copy" onclick="copyCurrent()">复制全文</button>
+      <button class="btn-cancel" style="margin-left:auto;color:#C4454A;border-color:#F2C4C4" onclick="deleteCard(viewingId)">删除</button>
+      <button class="btn-cancel" onclick="closeDetail()">关闭</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mind Map Modal -->
+<div class="mindmap-overlay" id="mindmap-modal">
+  <div class="mindmap-modal">
+    <div class="mindmap-header">
+      <h3>书籍思维导图</h3>
+      <select class="mm-book-select" id="mm-book-select" onchange="renderMindMap()">
+        <option value="">选择一本书…</option>
+      </select>
+      <button class="mindmap-close" onclick="closeMindMap()">✕</button>
+    </div>
+    <div class="mindmap-body">
+      <div id="mm-content"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ──
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwPaYt1SmMRP3dF2UIF7xBYusC20ilWoc4rv9L4LSu1kE3__DP3ePArmkHEACT5Tcim/exec';
+const STORAGE_KEY = 'home_library_v1';
+const SYNCED_KEY  = 'home_library_synced';
+
+// ── In-memory cards ──
+let cards = [];
+
+// ── Sync status UI ──
+function setSyncStatus(state, msg) {
+  // state: 'syncing' | 'ok' | 'error' | 'offline'
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  const icons = { syncing:'⟳', ok:'●', error:'!', offline:'○' };
+  const colors = { syncing:'var(--ink3)', ok:'#4A7C6F', error:'#C4454A', offline:'var(--ink3)' };
+  el.textContent = icons[state] + ' ' + msg;
+  el.style.color = colors[state];
+  if (state === 'syncing') el.style.animation = 'spin 1s linear infinite';
+  else el.style.animation = 'none';
+}
+
+// ── GAS fetch via JSONP (avoids CORS) ──
+function gasRequest(params) {
+  return new Promise((resolve, reject) => {
+    const cb = 'cb_' + Date.now();
+    const qs = Object.entries({...params, callback: cb})
+      .map(([k,v]) => `${k}=${encodeURIComponent(v)}`).join('&');
+    const script = document.createElement('script');
+    script.src = GAS_URL + '?' + qs;
+    window[cb] = (data) => {
+      delete window[cb];
+      document.body.removeChild(script);
+      resolve(data);
+    };
+    script.onerror = () => {
+      delete window[cb];
+      document.body.removeChild(script);
+      reject(new Error('Network error'));
+    };
+    document.body.appendChild(script);
+    setTimeout(() => {
+      if (window[cb]) {
+        delete window[cb];
+        if (script.parentNode) document.body.removeChild(script);
+        reject(new Error('Timeout'));
+      }
+    }, 15000);
+  });
+}
+
+// ── Load: Sheets first, fallback to localStorage ──
+async function loadCards() {
+  setSyncStatus('syncing', '同步中…');
+  // Show cached data immediately while loading
+  const cached = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  if (cached.length > 0) {
+    cards = cached;
+    renderCards();
+  }
+  try {
+    const res = await gasRequest({ action: 'getAll' });
+    if (res.cards) {
+      cards = res.cards;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+      localStorage.setItem(SYNCED_KEY, '1');
+      setSyncStatus('ok', '已同步');
+      renderCards();
+
+      // First-time migration: push local cards that aren't in Sheets yet
+      if (!localStorage.getItem(SYNCED_KEY) && cached.length > 0) {
+        await migrateLocalCards(cached, res.cards);
+      }
+    }
+  } catch(e) {
+    setSyncStatus('offline', '离线模式');
+    if (cached.length === 0) {
+      cards = getDefaultCards();
+      renderCards();
+    }
+  }
+}
+
+// Push local-only cards up to Sheets (one-time migration)
+async function migrateLocalCards(localCards, sheetCards) {
+  const sheetIds = new Set(sheetCards.map(c => c.id));
+  const toMigrate = localCards.filter(c => !sheetIds.has(c.id));
+  if (toMigrate.length === 0) return;
+  setSyncStatus('syncing', `迁移 ${toMigrate.length} 条本地数据…`);
+  for (const card of toMigrate) {
+    await gasRequest({ action: 'save', card: JSON.stringify(card) });
+  }
+  setSyncStatus('ok', '迁移完成');
+}
+
+// ── Save ──
+async function saveData(card) {
+  // Optimistic: update local immediately
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+  setSyncStatus('syncing', '保存中…');
+  try {
+    await gasRequest({ action: 'save', card: JSON.stringify(card) });
+    setSyncStatus('ok', '已同步');
+  } catch(e) {
+    setSyncStatus('error', '保存失败，数据已在本地');
+  }
+}
+
+// ── Delete ──
+async function deleteCard(id) {
+  if (!confirm('确定删除这条素材？')) return;
+  cards = cards.filter(c => c.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+  closeDetail();
+  renderCards();
+  setSyncStatus('syncing', '删除中…');
+  try {
+    await gasRequest({ action: 'delete', id: String(id) });
+    setSyncStatus('ok', '已同步');
+  } catch(e) {
+    setSyncStatus('error', '删除未同步');
+  }
+}
+
+function getDefaultCards() {
+  return [
+    {
+      id: 1, cat: '收纳', src: '书籍', srcName: '断舍离',
+      q: '东西总是越来越多，怎么从根源控制？',
+      method: '不是整理物品，而是减少物品总量。先判断"这个东西现在的我需不需要"，而不是"这东西还能不能用"。',
+      why: '整理是结果，而不是目标。从"物品与我的关系"出发，才能真正减少决策疲劳。',
+      effect: '每次整理后不容易反弹，因为总量变少了。',
+      type: '方法', tags: ['断舍离', '取舍', '极简'], ts: Date.now() - 86400000*3
+    },
+    {
+      id: 2, cat: '收纳', src: '小红书', srcName: '@收纳研究所',
+      q: '衣柜叠放的衣服总是越叠越乱？',
+      method: '所有衣服改用"竖立收纳"，衣服折成长方形后立起来排列，像文件一样一眼看到每一件。',
+      why: '叠放是靠重力压住的，只要拿出中间的就全塌了。竖立放是相互独立的，拿任意一件不影响其他。',
+      effect: '衣柜打开后一目了然，再也不会"翻"衣柜，而是"选"衣柜。',
+      type: '方法', tags: ['衣橱', '日常维持', '近藤麻理惠'], ts: Date.now() - 86400000*2
+    },
+    {
+      id: 3, cat: '家务', src: '书籍', srcName: '小家越住越大',
+      q: '家务总是做不完，每天很累却感觉家里还是乱？',
+      method: '把家务分成"每日必做"（5分钟）和"周末深度"（2小时）。每日只做地板+洗碗+归位三件事。',
+      why: '大多数人把所有家务混在一起，不分优先级，导致每次做家务都感觉做不完。分层后认知负担减少。',
+      effect: '工作日回家不再面对乱局，周末不会有积压压力。',
+      type: '方法', tags: ['家务系统', '日常维持', '效率'], ts: Date.now() - 86400000
+    },
+    {
+      id: 4, cat: '好物', src: 'YouTube', srcName: 'The Home Edit',
+      q: '收纳盒买了一堆却没有解决问题？',
+      method: '先清空分类，确定每类物品的数量后，再量尺寸买收纳盒。买之前必须知道要放什么、放多少。',
+      why: '大多数人是"看到喜欢的盒子就买"，结果盒子装不满或装不下。收纳盒是最后一步，不是第一步。',
+      effect: '收纳盒100%利用率，不再囤积空盒子，视觉效果整洁统一。',
+      type: '观点', tags: ['好物避坑', '收纳盒', '购买决策'], ts: Date.now()
+    },
+    {
+      id: 5, cat: '装修', src: '自己', srcName: '自己的观察',
+      q: '如何让小户型看起来更宽敞？',
+      method: '家具靠墙放，留出中间动线；颜色统一在3种以内；窗帘做到顶，视觉上拉高层高。',
+      why: '视觉宽敞感来自"线条干净"和"动线畅通"，而不是真实面积。颜色多会让视觉"切碎"空间。',
+      effect: '同样面积的房间，感觉能大出20%。',
+      type: '观点', tags: ['小户型', '视觉技巧', '空间感'], ts: Date.now() - 3600000
+    }
+  ];
+}
+
+let currentFilter = 'all';
+let currentType = 'all';
+let currentCatFilter = 'all';
+let currentTag = '';
+let editingId = null;
+let viewingId = null;
+let selectedCat = '';
+let selectedSrc = '';
+let selectedType = '';
+
+// ── Tag Cloud ──
+function renderTagCloud() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  let pool = cards.filter(c => {
+    if (currentFilter.startsWith('src:')) { if (c.src !== currentFilter.slice(4)) return false; }
+    else if (currentFilter !== 'all') { if (c.cat !== currentFilter) return false; }
+    if (currentType !== 'all' && c.type !== currentType) return false;
+    if (q) {
+      const blob = [c.q, c.method, c.why, c.effect, c.srcName, ...(c.tags||[])].join(' ').toLowerCase();
+      if (!blob.includes(q)) return false;
+    }
+    return true;
+  });
+  const freq = {};
+  pool.forEach(c => (c.tags||[]).forEach(t => { if(t) freq[t] = (freq[t]||0)+1; }));
+  const sorted = Object.entries(freq).sort((a,b) => b[1]-a[1]);
+  const container = document.getElementById('tag-cloud-inner');
+  if (sorted.length === 0) {
+    container.innerHTML = '<span style="font-size:12px;color:var(--ink3)">暂无标签</span>';
+    return;
+  }
+  const max = sorted[0][1];
+  container.innerHTML = sorted.map(([tag, count]) => {
+    const ratio = count / max;
+    const size = ratio > 0.75 ? 4 : ratio > 0.5 ? 3 : ratio > 0.25 ? 2 : 1;
+    const active = currentTag === tag ? ' active' : '';
+    return `<button class="cloud-tag cloud-tag-size-${size}${active}" onclick="setTagFilter('${tag}')">${tag} <span style="opacity:0.6;font-size:10px">${count}</span></button>`;
+  }).join('');
+}
+
+function setTagFilter(tag) {
+  currentTag = currentTag === tag ? '' : tag;
+  document.getElementById('cloud-clear-btn').style.display = currentTag ? 'inline-block' : 'none';
+  renderTagCloud();
+  renderCards();
+}
+
+function clearTagFilter() {
+  currentTag = '';
+  document.getElementById('cloud-clear-btn').style.display = 'none';
+  renderTagCloud();
+  renderCards();
+}
+
+// ── Render ──
+function renderCards() {
+  const grid = document.getElementById('cards-grid');
+  const q = document.getElementById('search-input').value.toLowerCase();
+
+  let filtered = cards.filter(c => {
+    if (currentFilter.startsWith('src:')) {
+      if (c.src !== currentFilter.slice(4)) return false;
+      // XHS sub-filter (pink chips)
+      if (currentFilter === 'src:小红书' && xhsActive && xhsActive !== '全部') {
+        if (c.cat !== xhsActive) return false;
+      }
+      // cat filterbar filter for all sources
+      if (currentCatFilter !== 'all' && c.cat !== currentCatFilter) return false;
+    } else if (currentFilter !== 'all') {
+      if (c.cat !== currentFilter) return false;
+    }
+    if (currentType !== 'all' && c.type !== currentType) return false;
+    if (currentTag && !(c.tags||[]).includes(currentTag)) return false;
+    if (q) {
+      const blob = [c.q, c.method, c.why, c.effect, c.srcName, ...(c.tags||[])].join(' ').toLowerCase();
+      if (!blob.includes(q)) return false;
+    }
+    return true;
+  });
+
+  filtered.sort((a,b) => b.ts - a.ts);
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <h3>还没有素材</h3>
+      <p>点击右上角「添加素材」开始记录</p>
+    </div>`;
+  } else {
+    grid.innerHTML = filtered.map(c => cardHTML(c)).join('');
+  }
+  updateCounts();
+  renderTagCloud();
+}
+
+function cardHTML(c) {
+  const tags = (c.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+  const srcLabel = c.srcName ? `${c.src} · ${c.srcName}` : c.src;
+  return `<div class="card" data-cat="${c.cat}" onclick="openDetail(${c.id})">
+    <div class="card-header">
+      <span class="card-cat-tag">${c.cat}</span>
+      ${c.type ? `<span class="tag">${c.type}</span>` : ''}
+      <span class="card-source">${srcLabel}</span>
+    </div>
+    <div class="card-title">${c.q}</div>
+    ${c.method ? `<div class="card-section">
+      <div class="card-section-label">解决方法</div>
+      <div class="card-section-text">${truncate(c.method, 60)}</div>
+    </div>` : ''}
+    ${c.effect ? `<div class="card-section">
+      <div class="card-section-label">效果</div>
+      <div class="card-section-text">${truncate(c.effect, 40)}</div>
+    </div>` : ''}
+    ${tags ? `<div class="card-footer">${tags}</div>` : ''}
+  </div>`;
+}
+
+function truncate(s, n) {
+  return s && s.length > n ? s.slice(0,n) + '…' : (s||'');
+}
+
+function updateCounts() {
+  const cats = ['all','收纳','家务','好物','装修','小妙招'];
+  const srcs = ['书籍','小红书','YouTube','自己'];
+  cats.forEach(cat => {
+    const n = cat === 'all' ? cards.length : cards.filter(c=>c.cat===cat).length;
+    const el = document.getElementById('count-'+cat);
+    if (el) el.textContent = n;
+  });
+  srcs.forEach(src => {
+    const n = cards.filter(c=>c.src===src).length;
+    const el = document.getElementById('count-src-'+src);
+    if (el) el.textContent = n;
+  });
+}
+
+// ── Filters ──
+const TYPE_CHIPS = [
+  {label:'全部类型', val:'all'},
+  {label:'金句', val:'金句'},
+  {label:'方法', val:'方法'},
+  {label:'案例', val:'案例'},
+  {label:'观点', val:'观点'},
+];
+
+function renderFilterbar(mode) {
+  // mode: 'type' = 原来的类型筛选（小红书用）, 'cat' = 分类筛选（其他来源用）
+  const bar = document.getElementById('filter-bar');
+  currentType = 'all';
+  currentCatFilter = 'all';
+  if (mode === 'type') {
+    bar.innerHTML = TYPE_CHIPS.map((c,i) =>
+      `<button class="filter-chip${i===0?' active':''}" onclick="setType('${c.val}',this)">${c.label}</button>`
+    ).join('');
+  } else {
+    const cats = ['全部','收纳','家务','好物','装修','小妙招'];
+    bar.innerHTML = cats.map((c,i) =>
+      `<button class="filter-chip${i===0?' active':''}" onclick="setCatFilter('${c}',this)">${c}</button>`
+    ).join('');
+  }
+}
+
+function setFilter(f, el) {
+  currentFilter = f;
+  currentTag = '';
+  currentType = 'all';
+  currentCatFilter = 'all';
+  document.getElementById('cloud-clear-btn').style.display = 'none';
+  document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const labels = {'all':'全部素材','收纳':'收纳','家务':'家务','好物':'好物','装修':'装修','小妙招':'小妙招',
+    'src:书籍':'书籍','src:小红书':'小红书','src:YouTube':'YouTube','src:自己':'自己的想法'};
+  document.getElementById('page-title').textContent = labels[f] || f;
+  // XHS bar + filterbar mode
+  const xhsBar = document.getElementById('xhs-bar');
+  if (f === 'src:小红书') {
+    xhsBar.classList.add('visible');
+    renderXhsChips();
+    renderFilterbar('cat');
+  } else {
+    xhsBar.classList.remove('visible');
+    // 分类筛选（非小红书来源 或 全部/分类导航）
+    const isSrcFilter = f.startsWith('src:');
+    renderFilterbar(isSrcFilter ? 'cat' : 'type');
+  }
+  renderCards();
+}
+
+function setCatFilter(cat, el) {
+  currentCatFilter = cat === '全部' ? 'all' : cat;
+  currentTag = '';
+  document.getElementById('cloud-clear-btn').style.display = 'none';
+  document.querySelectorAll('.filterbar .filter-chip').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  renderCards();
+}
+
+function setType(t, el) {
+  currentType = t;
+  currentCatFilter = 'all';
+  currentTag = '';
+  document.getElementById('cloud-clear-btn').style.display = 'none';
+  document.querySelectorAll('.filterbar .filter-chip').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  renderCards();
+}
+
+// ── Add Modal ──
+function openAddModal() {
+  editingId = null;
+  selectedCat = ''; selectedSrc = ''; selectedType = '';
+  document.getElementById('modal-title-text').textContent = '添加素材';
+  ['field-q','field-method','field-why','field-effect','field-tags','field-source-name'].forEach(id=>{
+    document.getElementById(id).value = '';
+  });
+  document.querySelectorAll('.cat-btn').forEach(b=>b.className='cat-btn');
+  document.querySelectorAll('.src-btn').forEach(b=>b.className='src-btn');
+  document.getElementById('add-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('add-modal').classList.remove('open');
+}
+
+function selectCat(cat) {
+  selectedCat = cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>{ b.className='cat-btn'; });
+  event.target.className = `cat-btn selected-${cat}`;
+}
+
+function selectSrc(src) {
+  selectedSrc = src;
+  document.querySelectorAll('.src-btn').forEach(b=>{
+    if (!b.id.startsWith('type-')) b.className='src-btn';
+  });
+  event.target.className = 'src-btn sel';
+  const labels = {书籍:'书名', 小红书:'博主名', YouTube:'频道名', 自己:'备注（可选）'};
+  document.getElementById('source-name-label').textContent = labels[src] || '来源名称';
+}
+
+function selectType(t) {
+  selectedType = t;
+  ['金句','方法','案例','观点'].forEach(x=>{
+    document.getElementById('type-'+x).className='src-btn'+(x===t?' sel':'');
+  });
+}
+
+function saveCard() {
+  const q = document.getElementById('field-q').value.trim();
+  if (!q) { alert('请填写问题'); return; }
+  if (!selectedCat) { alert('请选择分类'); return; }
+
+  const card = {
+    id: editingId || Date.now(),
+    cat: selectedCat,
+    src: selectedSrc || '书籍',
+    srcName: document.getElementById('field-source-name').value.trim(),
+    q,
+    method: document.getElementById('field-method').value.trim(),
+    why: document.getElementById('field-why').value.trim(),
+    effect: document.getElementById('field-effect').value.trim(),
+    type: selectedType,
+    tags: document.getElementById('field-tags').value.split(/[，,]/).map(t=>t.trim()).filter(Boolean),
+    ts: editingId ? (cards.find(c=>c.id===editingId)||{ts:Date.now()}).ts : Date.now()
+  };
+
+  if (editingId) {
+    const idx = cards.findIndex(c=>c.id===editingId);
+    if (idx >= 0) cards[idx] = card; else cards.unshift(card);
+  } else {
+    cards.unshift(card);
+  }
+  closeModal();
+  renderCards();
+  saveData(card);
+}
+
+// ── Detail ──
+function openDetail(id) {
+  viewingId = id;
+  const c = cards.find(x=>x.id===id);
+  if (!c) return;
+
+  const tag = document.getElementById('d-cat-tag');
+  tag.textContent = c.cat;
+  tag.className = 'detail-cat-tag';
+  tag.style.cssText = `background:var(--${c.cat}-bg);color:var(--${c.cat})`;
+
+  document.getElementById('d-source').textContent =
+    [c.src, c.srcName].filter(Boolean).join(' · ');
+  document.getElementById('d-title').textContent = c.q;
+  document.getElementById('d-method').textContent = c.method || '—';
+  document.getElementById('d-why').textContent = c.why || '—';
+  document.getElementById('d-effect').textContent = c.effect || '—';
+
+  const tags = (c.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+  document.getElementById('d-tags').innerHTML =
+    (c.type ? `<span class="tag" style="background:var(--accent-light);color:var(--accent)">${c.type}</span>` : '') + tags;
+
+  document.getElementById('detail-modal').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-modal').classList.remove('open');
+}
+
+function editCurrent() {
+  closeDetail();
+  const c = cards.find(x=>x.id===viewingId);
+  if (!c) return;
+  editingId = c.id;
+  selectedCat = c.cat; selectedSrc = c.src; selectedType = c.type||'';
+  document.getElementById('modal-title-text').textContent = '编辑素材';
+  document.getElementById('field-q').value = c.q||'';
+  document.getElementById('field-method').value = c.method||'';
+  document.getElementById('field-why').value = c.why||'';
+  document.getElementById('field-effect').value = c.effect||'';
+  document.getElementById('field-source-name').value = c.srcName||'';
+  document.getElementById('field-tags').value = (c.tags||[]).join('，');
+  document.querySelectorAll('.cat-btn').forEach(b=>{
+    b.className = 'cat-btn' + (b.textContent===c.cat?` selected-${c.cat}`:'');
+  });
+  document.querySelectorAll('.src-btn').forEach(b=>{
+    if (!b.id.startsWith('type-')) b.className = 'src-btn';
+  });
+  if (c.src) {
+    const srcMap = {'书籍':'📚 书籍','小红书':'📕 小红书','YouTube':'▶ YouTube','自己':'💡 自己的想法'};
+    document.querySelectorAll('#src-picker .src-btn').forEach(b=>{
+      if (b.textContent.trim() === (srcMap[c.src]||c.src).trim()) b.className = 'src-btn sel';
+    });
+  }
+  if (c.type) document.getElementById('type-'+c.type).className = 'src-btn sel';
+  document.getElementById('add-modal').classList.add('open');
+}
+
+function copyCurrent() {
+  const c = cards.find(x=>x.id===viewingId);
+  if (!c) return;
+  const text = [
+    `【${c.cat}】${c.q}`,
+    c.method && `解决方法：${c.method}`,
+    c.why && `为什么有效：${c.why}`,
+    c.effect && `效果：${c.effect}`,
+    c.srcName && `来源：${c.src} · ${c.srcName}`
+  ].filter(Boolean).join('\n\n');
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '已复制 ✓';
+    setTimeout(()=>btn.textContent='复制全文', 1500);
+  });
+}
+
+// Close on overlay click
+document.getElementById('add-modal').addEventListener('click', e=>{
+  if (e.target === e.currentTarget) closeModal();
+});
+document.getElementById('detail-modal').addEventListener('click', e=>{
+  if (e.target === e.currentTarget) closeDetail();
+});
+
+// ── XHS Chips ──
+const XHS_KEY = 'home_xhs_chips_v1';
+let xhsChips = JSON.parse(localStorage.getItem(XHS_KEY) || 'null') ||
+  ['全部','装修','好物','观点','收纳','家务','小妙招'];
+let xhsActive = '全部';
+let xhsEditMode = false;
+
+function saveXhsChips() { localStorage.setItem(XHS_KEY, JSON.stringify(xhsChips)); }
+
+function renderXhsChips() {
+  const wrap = document.getElementById('xhs-chips-wrap');
+  const bar = document.getElementById('xhs-bar');
+  bar.classList.toggle('edit-mode', xhsEditMode);
+  document.getElementById('xhs-edit-btn').textContent = xhsEditMode ? '完成' : '管理';
+  wrap.innerHTML = xhsChips.map((chip, i) => {
+    const active = xhsActive === chip ? ' active' : '';
+    return `<button class="xhs-chip${active}" onclick="xhsFilterClick('${chip}')">
+      ${chip}
+      <span class="chip-del" onclick="xhsDelChip(event,${i})">✕</span>
+    </button>`;
+  }).join('');
+}
+
+function xhsFilterClick(chip) {
+  if (xhsEditMode) return;
+  xhsActive = chip;
+  renderXhsChips();
+  renderCards();
+}
+
+function xhsAddChip() {
+  const name = prompt('新增分类名称：');
+  if (!name || !name.trim()) return;
+  xhsChips.push(name.trim());
+  saveXhsChips();
+  renderXhsChips();
+}
+
+function xhsDelChip(e, i) {
+  e.stopPropagation();
+  if (xhsChips[i] === '全部') { alert('「全部」不能删除'); return; }
+  if (!confirm(`删除「${xhsChips[i]}」？`)) return;
+  if (xhsActive === xhsChips[i]) xhsActive = '全部';
+  xhsChips.splice(i, 1);
+  saveXhsChips();
+  renderXhsChips();
+  renderCards();
+}
+
+function toggleXhsEdit() {
+  xhsEditMode = !xhsEditMode;
+  renderXhsChips();
+}
+
+// Override renderCards to respect XHS chip filter
+const _origRenderCards = renderCards;
+// Patch: inject xhs filter into card filtering
+// (handled inline below by replacing renderCards)
+
+// ── Mind Map ──
+function openMindMap() {
+  const modal = document.getElementById('mindmap-modal');
+  // Populate book list
+  const books = [...new Set(cards.filter(c=>c.src==='书籍'&&c.srcName).map(c=>c.srcName))];
+  const sel = document.getElementById('mm-book-select');
+  sel.innerHTML = '<option value="">选择一本书…</option>' +
+    books.map(b=>`<option value="${b}">${b}</option>`).join('');
+  if (books.length === 1) { sel.value = books[0]; renderMindMap(); }
+  modal.classList.add('open');
+}
+
+function closeMindMap() {
+  document.getElementById('mindmap-modal').classList.remove('open');
+}
+
+function renderMindMap() {
+  const book = document.getElementById('mm-book-select').value;
+  const content = document.getElementById('mm-content');
+  if (!book) { content.innerHTML = '<p class="mm-empty">请选择一本书</p>'; return; }
+
+  const items = cards.filter(c => c.src === '书籍' && c.srcName === book);
+  if (items.length === 0) { content.innerHTML = '<p class="mm-empty">这本书还没有素材</p>'; return; }
+
+  // Group by cat
+  const groups = {};
+  items.forEach(c => { if (!groups[c.cat]) groups[c.cat]=[];  groups[c.cat].push(c); });
+
+  const catColors = {收纳:'--收纳',家务:'--家务',好物:'--好物',装修:'--装修',小妙招:'--小妙招'};
+
+  let html = `<div class="mm-root">
+    <div class="mm-center">${book}</div>
+    <div style="display:flex;flex-direction:column;gap:0;justify-content:center">`;
+
+  const groupKeys = Object.keys(groups);
+  groupKeys.forEach((cat, gi) => {
+    const color = catColors[cat] || '--ink2';
+    html += `<div style="display:flex;align-items:center;gap:0;margin:8px 0">
+      <div style="width:40px;height:2px;background:var(${color});flex-shrink:0"></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:12px;font-weight:500;color:var(${color});padding:3px 10px;background:var(${color}-bg,var(--bg));border-radius:6px;margin-bottom:4px;display:inline-block;align-self:flex-start">${cat}</div>`;
+
+    groups[cat].forEach((c, ci) => {
+      html += `<div style="display:flex;align-items:flex-start;gap:0">
+        <div style="display:flex;flex-direction:column;align-items:center">
+          ${ci > 0 ? `<div style="width:1px;height:8px;background:var(--border)"></div>` : ''}
+          <div style="width:24px;height:2px;background:var(--border)"></div>
+        </div>
+        <div class="mm-node" onclick="openDetail(${c.id})" style="border-left:3px solid var(${color})">
+          <div class="mm-node-q">${c.q}</div>
+          ${c.method ? `<div class="mm-node-method">${truncate(c.method,70)}</div>` : ''}
+          ${c.effect ? `<div class="mm-node-meta">效果：${truncate(c.effect,40)}</div>` : ''}
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  html += `</div></div>`;
+  content.innerHTML = html;
+}
+
+document.getElementById('mindmap-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeMindMap();
+});
+
+// Init
+loadCards();
+</script>
+</body>
+</html>
